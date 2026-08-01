@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:NextEvdMaui.ViewModels"
+             xmlns:models="clr-namespace:NextEvdMaui.Models"
+             x:Class="NextEvdMaui.MainPage"
+             x:DataType="vm:EmployeeListViewModel"
+             Title="Employees">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Clicked="OnAddClicked" />
+    </ContentPage.ToolbarItems>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshCommand}">
+        <CollectionView ItemsSource="{Binding Employees}"
+                         SelectionMode="Single"
+                         SelectionChanged="OnEmployeeSelected">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout VerticalOptions="Center"
+                                     HorizontalOptions="Center"
+                                     Padding="24">
+                    <Label Text="No employees yet."
+                           HorizontalOptions="Center" />
+                    <Label Text="Tap Add to create one."
+                           FontSize="12"
+                           TextColor="Gray"
+                           HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Employee">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Edit"
+                                           BackgroundColor="DarkOrange"
+                                           CommandParameter="{Binding .}"
+                                           Invoked="OnEditInvoked" />
+                                <SwipeItem Text="Delete"
+                                           BackgroundColor="Red"
+                                           CommandParameter="{Binding .}"
+                                           Invoked="OnDeleteInvoked" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Grid Padding="12,10"
+                              ColumnDefinitions="56,*"
+                              ColumnSpacing="12">
+                            <Border StrokeShape="RoundRectangle(28)"
+                                    HeightRequest="56"
+                                    WidthRequest="56">
+                                <Image Source="{Binding DisplayedImageSource}"
+                                       Aspect="AspectFill" />
+                            </Border>
+
+                            <VerticalStackLayout Grid.Column="1"
+                                                  VerticalOptions="Center"
+                                                  Spacing="2">
+                                <Label Text="{Binding EmployeeName}"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding DepartmentName}"
+                                       FontSize="12"
+                                       TextColor="Gray" />
+                                <Label Text="{Binding Email}"
+                                       FontSize="12"
+                                       TextColor="Gray" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+
+</ContentPage>

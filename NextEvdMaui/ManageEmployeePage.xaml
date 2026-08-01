@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:NextEvdMaui.ViewModels"
+             xmlns:models="clr-namespace:NextEvdMaui.Models"
+             x:Class="NextEvdMaui.ManageEmployeePage"
+             x:Name="PageRoot"
+             x:DataType="vm:ManageEmployeeViewModel"
+             Title="Manage Employee">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+
+            <Border StrokeShape="RoundRectangle(60)"
+                    HeightRequest="120"
+                    WidthRequest="120"
+                    HorizontalOptions="Center">
+                <Image Source="{Binding Employee.DisplayedImageSource}"
+                       Aspect="AspectFill" />
+            </Border>
+
+            <Button Text="Pick Photo"
+                    Command="{Binding PickImageCommand}"
+                    HorizontalOptions="Center" />
+
+            <Label Text="Employee Name" FontAttributes="Bold" />
+            <Entry Text="{Binding Employee.EmployeeName}"
+                   Placeholder="Full name" />
+
+            <Label Text="Email" FontAttributes="Bold" />
+            <Entry Text="{Binding Employee.Email}"
+                   Keyboard="Email"
+                   Placeholder="name@example.com" />
+
+            <Label Text="Phone" FontAttributes="Bold" />
+            <Entry Text="{Binding Employee.Phone}"
+                   Keyboard="Telephone"
+                   Placeholder="01XXXXXXXXX" />
+
+            <Label Text="Salary" FontAttributes="Bold" />
+            <Entry Text="{Binding Employee.Salary}"
+                   Keyboard="Numeric" />
+
+            <Label Text="Join Date" FontAttributes="Bold" />
+            <DatePicker Date="{Binding Employee.JoinDate}" />
+
+            <HorizontalStackLayout Spacing="10">
+                <Label Text="Active"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center" />
+                <Switch IsToggled="{Binding Employee.IsActive}" />
+            </HorizontalStackLayout>
+
+            <Label Text="Department" FontAttributes="Bold" />
+            <Picker ItemsSource="{Binding Departments}"
+                    ItemDisplayBinding="{Binding DepartmentName}"
+                    SelectedItem="{Binding SelectedDepartment}" />
+
+            <BoxView HeightRequest="1" Color="LightGray" Margin="0,10" />
+
+            <HorizontalStackLayout Spacing="10">
+                <Label Text="Designations"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center" />
+                <Button Text="+ Add"
+                        Command="{Binding AddDesignationCommand}" />
+            </HorizontalStackLayout>
+
+            <CollectionView ItemsSource="{Binding Employee.Designations}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Designation">
+                        <Grid Padding="0,8"
+                              ColumnDefinitions="*,80,110,Auto"
+                              ColumnSpacing="8">
+                            <Entry Grid.Column="0"
+                                   Text="{Binding DesignationName}"
+                                   Placeholder="Title" />
+                            <Entry Grid.Column="1"
+                                   Text="{Binding Grade}"
+                                   Keyboard="Numeric"
+                                   Placeholder="Grade" />
+                            <Entry Grid.Column="2"
+                                   Text="{Binding BasicSalary}"
+                                   Keyboard="Numeric"
+                                   Placeholder="Basic salary" />
+                            <Button Grid.Column="3"
+                                    Text="✕"
+                                    Command="{Binding Source={x:Reference PageRoot}, Path=BindingContext.RemoveDesignationCommand}"
+                                    CommandParameter="{Binding .}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Save"
+                    Command="{Binding SaveCommand}"
+                    Margin="0,20,0,0" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                IsVisible="{Binding IsBusy}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
