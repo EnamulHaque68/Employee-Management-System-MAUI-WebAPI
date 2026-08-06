@@ -1,7 +1,7 @@
 # 👨‍💼 Employee Management System
 
 <p align="center">
-  <img src="./assets/banner.png" alt="Employee Management System Banner" width="100%">
+  <img src="./assets/image11.png" alt="Employee Management System Banner" width="100%">
 </p>
 
 <p align="center">
